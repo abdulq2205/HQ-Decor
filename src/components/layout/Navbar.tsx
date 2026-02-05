@@ -77,6 +77,8 @@ export function Navbar() {
                                 onMouseEnter={() => setHoveredLink(link.name)}
                                 className={cn(
                                     "text-xs font-medium uppercase tracking-[0.15em] transition-all duration-300 relative group py-1",
+                                    // Scale effect on hover
+                                    "hover:scale-110 origin-center",
                                     isTransparent ? "text-white/90" : "text-secondary/80",
                                     // Hover logic: If something is hovered and strict match -> keep fully opaque (or white/accent), 
                                     // If something is hovered and NOT match -> dim it
