@@ -14,10 +14,13 @@ export function Navbar() {
     const pathname = usePathname();
     const isHome = pathname === "/";
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isPastHero, setIsPastHero] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
+            // Hero is 79vh, so check if we've scrolled past that
+            setIsPastHero(window.scrollY > (window.innerHeight * 0.79));
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
@@ -38,14 +41,16 @@ export function Navbar() {
     // If Home AND not scrolled -> Transparent bg, White text
     // Else -> White/Blur bg, Dark text
     const isTransparent = isHome && !isScrolled;
+    const shouldHide = isHome && isPastHero;
 
     return (
         <nav
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+                shouldHide ? "-translate-y-full" : "translate-y-0",
                 isTransparent
-                    ? "bg-transparent border-transparent text-white"
-                    : "bg-primary/95 backdrop-blur-md border-b border-gray-100 text-secondary"
+                    ? "bg-transparent border-transparent text-white pt-7"
+                    : "bg-primary/95 backdrop-blur-md border-b border-gray-100 text-[#4A3427] pb-2"
             )}
             onMouseLeave={() => setHoveredLink(null)}
         >
@@ -64,22 +69,22 @@ export function Navbar() {
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center justify-center md:justify-start w-full md:w-auto absolute left-0 right-0 md:relative pointer-events-none md:pointer-events-auto">
                         <Link href="/" className="pointer-events-auto font-playfair-manual text-3xl md:text-4xl tracking-tight">
-                            HQ decor
+                            <span className="text-6xl md:text-7xl">HQ</span> decor
                         </Link>
                     </div>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex space-x-8 items-center">
+                    <div className="hidden md:flex space-x-15 items-center pt-4">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
                                 onMouseEnter={() => setHoveredLink(link.name)}
                                 className={cn(
-                                    "text-xs font-medium uppercase tracking-[0.15em] transition-all duration-300 relative group py-1",
+                                    "text-sm font-medium uppercase tracking-[0.15em] transition-all duration-300 relative group py-1",
                                     // Scale effect on hover
                                     "hover:scale-110 origin-center",
-                                    isTransparent ? "text-white/90 hover:text-white" : "text-secondary/80 hover:text-accent"
+                                    isTransparent ? "text-white/90 hover:text-white" : "text-[#4A3427] hover:text-accent"
                                 )}
                             >
                                 {link.name}
@@ -92,12 +97,12 @@ export function Navbar() {
                     </div>
 
                     {/* Right Icons */}
-                    <div className="flex items-center space-x-6 z-10">
-                        <button className={cn("transition-colors", isTransparent ? "text-white hover:text-gray-200" : "text-secondary hover:text-accent")}>
+                    <div className="flex items-center space-x-6 z-10 pt-4">
+                        <button className={cn("transition-colors", isTransparent ? "text-white hover:text-gray-200" : "text-[#4A3427] hover:text-accent")}>
                             <Search size={20} strokeWidth={1} />
                         </button>
                         <button
-                            className={cn("transition-colors relative", isTransparent ? "text-white hover:text-gray-200" : "text-secondary hover:text-accent")}
+                            className={cn("transition-colors relative", isTransparent ? "text-white hover:text-gray-200" : "text-[#4A3427] hover:text-accent")}
                             onClick={() => setIsCartOpen(true)}
                         >
                             <ShoppingBag size={20} strokeWidth={1} />
