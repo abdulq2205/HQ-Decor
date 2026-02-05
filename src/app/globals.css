@@ -1,13 +1,21 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&display=swap');
 
 @theme {
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-playfair);
+  /* Use the imported font family name directly */
+  --font-serif: "Playfair Display", serif;
 
   --color-primary: #F9F9F9;
   --color-secondary: #1A1A1A;
-  --color-accent: #7D8A74; 
+  --color-accent: #7D8A74;
   --color-accent-gold: #C5A059;
+}
+
+/* Explicit class to force override if needed */
+.font-playfair-manual {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
 }
 
 /* Custom Utilities for Hide Scrollbar if needed later, but sticking to basics for now */
