@@ -7,7 +7,7 @@ export default function Home() {
 
       {/* Hero Section */}
       {/* Hero Section */}
-      <section className="relative h-screen flex items-end justify-start bg-neutral-900 overflow-hidden">
+      <section className="relative h-[85vh] flex items-end justify-start bg-neutral-900 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           {/* 
