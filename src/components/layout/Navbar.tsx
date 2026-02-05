@@ -32,6 +32,8 @@ export function Navbar() {
         { name: "Contact", href: "/contact" },
     ];
 
+    const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+
     // Logic:
     // If Home AND not scrolled -> Transparent bg, White text
     // Else -> White/Blur bg, Dark text
@@ -45,6 +47,7 @@ export function Navbar() {
                     ? "bg-transparent border-transparent text-white"
                     : "bg-primary/95 backdrop-blur-md border-b border-gray-100 text-secondary"
             )}
+            onMouseLeave={() => setHoveredLink(null)}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
@@ -71,9 +74,15 @@ export function Navbar() {
                             <Link
                                 key={link.name}
                                 href={link.href}
+                                onMouseEnter={() => setHoveredLink(link.name)}
                                 className={cn(
-                                    "text-xs font-medium uppercase tracking-[0.15em] transition-colors relative group py-1",
-                                    isTransparent ? "text-white/90 hover:text-white" : "text-secondary/80 hover:text-accent"
+                                    "text-xs font-medium uppercase tracking-[0.15em] transition-all duration-300 relative group py-1",
+                                    isTransparent ? "text-white/90" : "text-secondary/80",
+                                    // Hover logic: If something is hovered and strict match -> keep fully opaque (or white/accent), 
+                                    // If something is hovered and NOT match -> dim it
+                                    hoveredLink && hoveredLink !== link.name && "opacity-50 blur-[0.5px]",
+                                    // Hover colors
+                                    !hoveredLink && (isTransparent ? "hover:text-white" : "hover:text-accent")
                                 )}
                             >
                                 {link.name}
