@@ -6,31 +6,36 @@ export default function Home() {
     <div className="space-y-0">
 
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center bg-gray-50 overflow-hidden">
-        {/* Background Image Placeholder */}
-        <div className="absolute inset-0 bg-neutral-200">
-          {/* In production, use next/image with a real hero image */}
-          <div className="w-full h-full bg-linear-to-b from-gray-200 to-gray-300 opacity-50" />
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-end justify-start bg-neutral-900 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          {/* 
+             NOTE: To truly match Vela, we need a high-quality dark/moody image.
+             Using a CSS gradient here to mimic the dark red/shadowy vibe.
+             In production, replace with <Image src="..." /> 
+           */}
+          <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-900/40 via-neutral-900 to-black opacity-80 z-0" />
+          {/* Fallback dark bg */}
+          <div className="absolute inset-0 bg-black/40 z-0" />
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto space-y-8 animate-in fade-in zoom-in duration-1000">
-          <h1 className="font-serif text-5xl md:text-7xl font-bold text-secondary tracking-tight">
-            Handmade Islamic Décor for <br />
-            <span className="italic font-light">Meaningful Celebrations</span>
-          </h1>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link
-              href="/shop"
-              className="px-8 py-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-300 font-medium uppercase tracking-widest text-sm min-w-[200px]"
-            >
-              Browse Collection
-            </Link>
-            <Link
-              href="/custom-orders"
-              className="px-8 py-3 border border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-300 font-medium uppercase tracking-widest text-sm min-w-[200px]"
-            >
-              Request Custom Order
-            </Link>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+          <div className="max-w-3xl space-y-6">
+            <h1 className="text-white font-sans text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight uppercase leading-[0.9]">
+              The Ramadan <br /> Capsule
+            </h1>
+            <p className="text-white/90 text-sm md:text-base tracking-[0.2em] font-medium uppercase pl-1">
+              Two Tones. One Seamless Tradition.
+            </p>
+            <div className="pt-8 pl-1">
+              <Link
+                href="/shop"
+                className="inline-block bg-white text-black px-12 py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
+              >
+                Shop Now
+              </Link>
+            </div>
           </div>
         </div>
       </section>
