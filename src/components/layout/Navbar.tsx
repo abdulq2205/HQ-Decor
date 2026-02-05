@@ -63,7 +63,7 @@ export function Navbar() {
 
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center justify-center md:justify-start w-full md:w-auto absolute left-0 right-0 md:relative pointer-events-none md:pointer-events-auto">
-                        <Link href="/" className="pointer-events-auto font-serif text-3xl md:text-4xl font-normal tracking-tight">
+                        <Link href="/" className="pointer-events-auto font-serif text-3xl md:text-4xl font-bold tracking-tight">
                             HQ Decor
                         </Link>
                     </div>
