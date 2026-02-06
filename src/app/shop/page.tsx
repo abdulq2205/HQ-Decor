@@ -22,6 +22,7 @@ function ShopContent() {
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+    const [isSortOpen, setIsSortOpen] = useState(false);
 
     // Extract unique categories and types for filters
     const allCategories = Array.from(new Set(products.flatMap((p) => p.category)));
@@ -75,24 +76,39 @@ function ShopContent() {
                             {isMobileFiltersOpen ? "Hide Filters" : "Show Filters"}
                         </button>
 
-                        <div className="relative group h-full flex items-center pl-6 border-l border-gray-200">
-                            <button className="flex items-center gap-2 hover:text-accent transition-colors">
-                                Sort by <ChevronDown size={14} />
+                        {isSortOpen && (
+                            <div className="fixed inset-0 z-30" onClick={() => setIsSortOpen(false)} />
+                        )}
+
+                        <div className="relative h-full flex items-center pl-6 border-l border-gray-200">
+                            <button
+                                className="flex items-center gap-2 hover:text-accent transition-colors relative z-40"
+                                onClick={() => setIsSortOpen(!isSortOpen)}
+                            >
+                                Sort by <ChevronDown size={14} className={`transition-transform duration-200 ${isSortOpen ? "rotate-180" : ""}`} />
                             </button>
-                            <div className="absolute right-0 top-full w-48 bg-white border border-gray-100 shadow-lg hidden group-hover:block z-40">
-                                <button
-                                    className={`block w-full text-left px-4 py-3 hover:bg-gray-50 ${sortOrder === "asc" ? "text-accent" : ""}`}
-                                    onClick={() => setSortOrder("asc")}
-                                >
-                                    Price: Low to High
-                                </button>
-                                <button
-                                    className={`block w-full text-left px-4 py-3 hover:bg-gray-50 ${sortOrder === "desc" ? "text-accent" : ""}`}
-                                    onClick={() => setSortOrder("desc")}
-                                >
-                                    Price: High to Low
-                                </button>
-                            </div>
+                            {isSortOpen && (
+                                <div className="absolute right-0 top-full w-48 bg-white border border-gray-100 shadow-lg z-40">
+                                    <button
+                                        className={`block w-full text-left px-4 py-3 hover:bg-gray-50 ${sortOrder === "asc" ? "text-accent" : ""}`}
+                                        onClick={() => {
+                                            setSortOrder("asc");
+                                            setIsSortOpen(false);
+                                        }}
+                                    >
+                                        Price: Low to High
+                                    </button>
+                                    <button
+                                        className={`block w-full text-left px-4 py-3 hover:bg-gray-50 ${sortOrder === "desc" ? "text-accent" : ""}`}
+                                        onClick={() => {
+                                            setSortOrder("desc");
+                                            setIsSortOpen(false);
+                                        }}
+                                    >
+                                        Price: High to Low
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -102,9 +118,9 @@ function ShopContent() {
                 {/* Sidebar (Desktop) */}
                 <aside
                     className={`
-                        bg-[#F4F4F4] border-r border-gray-200 transition-all duration-300 overflow-hidden
+                        bg-[#F4F4F4] border-r border-gray-200 transition-all duration-300
                         ${isMobileFiltersOpen ? "w-64 opacity-100 p-6" : "w-0 opacity-0 p-0 border-none"}
-                        hidden md:block
+                        hidden md:block sticky top-12 self-start max-h-[calc(100vh-3rem)] overflow-y-auto
                     `}
                 >
                     <div className="space-y-6 w-52">

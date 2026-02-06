@@ -17,7 +17,7 @@ export function ProductCard({ product }: ProductCardProps) {
     return (
         <div className="group relative flex flex-col space-y-2 cursor-pointer">
             {/* Image Container */}
-            <div className="aspect-[11/12] relative overflow-hidden bg-gray-100">
+            <Link href={`/product/${product.id}`} className="block aspect-[11/12] relative overflow-hidden bg-gray-100">
                 {/* Image Placeholder / Next.Image */}
                 <div className="w-full h-full bg-neutral-200 group-hover:bg-neutral-300 transition-colors duration-500" />
 
@@ -30,18 +30,19 @@ export function ProductCard({ product }: ProductCardProps) {
                 /> */}
 
                 {/* Add to Cart Bar */}
-                <div className="absolute bottom-0 left-0 right-0 bg-[#E8E0E0] py-3 text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                <div className="absolute bottom-0 left-0 right-0 bg-[#3A5A40]/75 py-3 text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     <button
                         onClick={(e) => {
                             e.preventDefault();
+                            e.stopPropagation(); // Stop propagation to prevent navigation when clicking Add to Cart
                             addToCart(product);
                         }}
-                        className="text-xs font-bold uppercase tracking-widest text-[#4A3427] w-full h-full"
+                        className="text-xs font-bold uppercase tracking-widest text-white w-full h-full"
                     >
                         Add to Cart
                     </button>
                 </div>
-            </div>
+            </Link>
 
             {/* Details */}
             <Link href={`/product/${product.id}`} className="block space-y-1 mt-2 text-left">

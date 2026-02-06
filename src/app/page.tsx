@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, ShoppingBag, FileText, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { products } from "@/data/products";
 
 export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -111,31 +112,24 @@ export default function Home() {
               className="flex overflow-x-auto space-x-6 pb-8 scrollbar-hide snap-x snap-mandatory"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {[
-                { name: "LEPPI", price: "$27.00 USD", image: "bg-white" },
-                { name: "OM AL DUNYA", price: "$27.00 USD", image: "bg-white" },
-                { name: "OMBRE ROUGE", price: "$27.00 USD", image: "bg-white" },
-                { name: "OMBRE NOIR", price: "$27.00 USD", image: "bg-white" },
-                { name: "FLORAL MIST", price: "$27.00 USD", image: "bg-white" },
-                { name: "DESERT SAND", price: "$27.00 USD", image: "bg-white" }
-              ].map((cat) => (
-                <div key={cat.name} className="flex-none w-[350px] md:w-[450px] snap-start group/card cursor-pointer">
+              {products.slice(0, 6).map((product) => (
+                <Link href={`/product/${product.id}`} key={product.id} className="flex-none w-[350px] md:w-[450px] snap-start group/card cursor-pointer">
                   {/* Image Container with Hover Overlay */}
                   <div className="relative aspect-square overflow-hidden bg-white border border-[#4A3427]">
-                    <div className={`w-full h-full ${cat.image} transition-transform duration-700 group-hover/card:scale-105`} />
+                    <div className={`w-full h-full bg-neutral-200 transition-transform duration-700 group-hover/card:scale-105`} />
 
                     {/* Hover Add to Cart Bar */}
-                    <div className="absolute inset-x-0 bottom-0 bg-[#3A5A40] text-white py-3 text-center uppercase text-xs font-bold tracking-widest translate-y-full group-hover/card:translate-y-0 transition-transform duration-300">
+                    <div className="absolute inset-x-0 bottom-0 bg-[#3A5A40]/75 text-white py-3 text-center uppercase text-xs font-bold tracking-widest translate-y-full group-hover/card:translate-y-0 transition-transform duration-300">
                       Add to Cart
                     </div>
                   </div>
 
                   {/* Text Info */}
                   <div className="text-center space-y-1 border-x border-b border-[#3A5A40] p-4 bg-white">
-                    <h3 className="text-sm font-bold uppercase tracking-wide">{cat.name}</h3>
-                    <p className="text-xs text-gray-500">{cat.price}</p>
+                    <h3 className="text-sm font-bold uppercase tracking-wide">{product.name}</h3>
+                    <p className="text-xs text-gray-500">${product.price}.00 USD</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

@@ -3,15 +3,14 @@
 import { useState, use, Suspense } from "react";
 import { products, Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
-import { ChevronDown, ChevronUp, Check, ArrowLeft } from "lucide-react";
+import { ChevronDown, ChevronUp, Check, ArrowLeft, Star, Info, MessageCircle, Heart, Share2, Ruler } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 // Since we are using client component, we unwrap params with React.use()
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-    // Use Suspense boundary if needed, but params promise handling is robust in Next 15+
     return (
-        <Suspense fallback={<div className="min-h-screen pt-24 text-center">Loading Product...</div>}>
+        <Suspense fallback={<div className="min-h-screen pt-40 text-center">Loading Product...</div>}>
             <ProductContent params={params} />
         </Suspense>
     );
@@ -26,134 +25,196 @@ function ProductContent({ params }: { params: Promise<{ id: string }> }) {
     }
 
     const { addToCart } = useCart();
+    // Mocks for visual matching of reference
+    const colors = ["#4A192C", "#A87C7C", "#C492B1", "#8E354A", "#9E2A2B", "#6D3B47", "#D6BCC0", "#540B0E", "#335C67", "#E09F3E"];
+    const sizes = ["STANDARD", "DOUBLE", "MINI", "SQUARE"];
+
+    const [selectedSize, setSelectedSize] = useState("STANDARD");
+    const [selectedColor, setSelectedColor] = useState(colors[0]);
+    const [quantity, setQuantity] = useState(1);
+    const [activeTab, setActiveTab] = useState<"description" | "size">("description");
+
+    // Existing logic for variants if they obey the data model
     const [selectedVariant, setSelectedVariant] = useState<string | undefined>(product.variants?.[0]);
-    const [selectedText, setSelectedText] = useState<string | undefined>(product.textOptions?.[0]);
-    const [customText, setCustomText] = useState("");
-    const [isDeliveryOpen, setIsDeliveryOpen] = useState(false);
+
     const [isAdded, setIsAdded] = useState(false);
 
     const handleAddToCart = () => {
+        // In a real app, we would pass the selected size/color/etc to the cart
         addToCart(product, {
-            variant: selectedVariant,
-            text: selectedText,
-            custom: customText,
+            variant: selectedVariant || selectedColor, // Fallback to color mock
+            text: selectedSize, // Fallback using text field for size
         });
         setIsAdded(true);
         setTimeout(() => setIsAdded(false), 2000);
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <Link href="/shop" className="inline-flex items-center text-sm text-gray-500 hover:text-secondary mb-8 transition-colors">
-                <ArrowLeft size={16} className="mr-2" /> Back to Shop
-            </Link>
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
-                {/* Left: Image Gallery (Single Image for MVP) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+                {/* Left: Image Section */}
                 <div className="space-y-4">
-                    <div className="aspect-[4/5] bg-gray-100 relative rounded-sm overflow-hidden group">
-                        {/* Image Placeholder */}
+                    <div className="aspect-[4/5] bg-neutral-100 relative overflow-hidden group">
                         <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-gray-400">
-                            <span className="sr-only">{product.name}</span>
-                            {/* Real Image would go here */}
+                            {/* Placeholder logic matching Home Page */}
+                            <div className={`w-full h-full bg-neutral-200`} />
                         </div>
-                        <div className="absolute inset-0 bg-black/5" />
+                        {/* Accessibility Button Overlay (Mock) */}
+                        <div className="absolute bottom-4 left-4">
+                            <div className="bg-[#005740] rounded-full p-2 text-white cursor-pointer hover:bg-[#004230] transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m4.93 4.93 14.14 14.14" /></svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Right: Details */}
-                <div className="space-y-10">
-                    <div className="space-y-4">
-                        <h1 className="font-serif text-4xl md:text-5xl text-secondary">{product.name}</h1>
-                        <p className="text-xl font-medium text-gray-900">${product.price}</p>
-                        <p className="text-gray-600 leading-relaxed">{product.description || "A beautiful handmade addition to your collection."}</p>
-                    </div>
+                {/* Right: Details Section */}
+                <div className="space-y-8 pt-4">
+                    <div className="space-y-2">
+                        <h1 className="font-serif text-4xl text-secondary">{product.name}</h1>
 
-                    <div className="space-y-8 border-t border-gray-100 pt-8">
-                        {/* Variants */}
-                        {product.variants && (
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium uppercase tracking-wider text-gray-500">Select Finish</label>
-                                <div className="flex flex-wrap gap-3">
-                                    {product.variants.map((variant) => (
-                                        <button
-                                            key={variant}
-                                            onClick={() => setSelectedVariant(variant)}
-                                            className={`px-4 py-2 border text-sm transition-all duration-200 ${selectedVariant === variant
-                                                    ? "border-secondary bg-secondary text-white"
-                                                    : "border-gray-200 text-gray-600 hover:border-secondary"
-                                                }`}
-                                        >
-                                            {variant}
-                                        </button>
-                                    ))}
-                                </div>
+                        {/* Reviews Mock */}
+                        <div className="flex items-center gap-2">
+                            <div className="flex text-[#005740]">
+                                {[1, 2, 3, 4, 5].map((s) => (
+                                    <Star key={s} size={14} fill="currentColor" stroke="none" />
+                                ))}
                             </div>
-                        )}
-
-                        {/* Text Options */}
-                        {product.textOptions && (
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium uppercase tracking-wider text-gray-500">Design Style</label>
-                                <div className="relative">
-                                    <select
-                                        value={selectedText}
-                                        onChange={(e) => setSelectedText(e.target.value)}
-                                        className="w-full p-3 border border-gray-200 bg-white text-secondary focus:outline-hidden focus:border-secondary transition-colors appearance-none rounded-none"
-                                    >
-                                        {product.textOptions.map((opt) => (
-                                            <option key={opt} value={opt}>{opt}</option>
-                                        ))}
-                                    </select>
-                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Custom Text Logic: If it allows custom text, or if we want to allow it globally for 'Custom' products. 
-                 PRD says: "Custom Wording" (only appears if product allows). 
-                 We don't have a flag for that in data currently, let's assume if it has type 'Decor' or 'Wall' maybe? 
-                 Or just add a 'Custom' field to generic request. Let's add it always for now as "Notes/Customization" */}
-                        <div className="space-y-3">
-                            <label className="text-sm font-medium uppercase tracking-wider text-gray-500">Custom Wording / Notes</label>
-                            <textarea
-                                rows={3}
-                                value={customText}
-                                onChange={(e) => setCustomText(e.target.value)}
-                                placeholder="Enter any specific customization requests here..."
-                                className="w-full p-3 border border-gray-200 text-sm focus:outline-hidden focus:border-secondary transition-colors resize-none placeholder:text-gray-300 rounded-none"
-                            />
+                            <span className="text-xs text-gray-500">114 Reviews</span>
                         </div>
                     </div>
 
-                    <button
-                        onClick={handleAddToCart}
-                        disabled={isAdded}
-                        className={`w-full py-4 text-center font-medium uppercase tracking-widest transition-all duration-300 ${isAdded
-                                ? "bg-accent text-white"
-                                : "bg-secondary text-white hover:bg-black"
-                            }`}
-                    >
-                        {isAdded ? (
-                            <span className="flex items-center justify-center gap-2"><Check size={18} /> Added to Request List</span>
-                        ) : "Add to Request List"}
-                    </button>
+                    <div className="space-y-1">
+                        <p className="text-xl font-bold text-gray-900">${product.price}.00 USD</p>
+                        <p className="text-xs text-gray-500">Shipping calculated at checkout.</p>
+                    </div>
 
-                    {/* Delivery Accordion */}
-                    <div className="border-t border-gray-100 pt-4">
+                    {/* Stock Status */}
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-sm text-gray-600">Item is in stock</span>
+                    </div>
+
+                    {/* Color Selection (Mock Visually to match screenshot) */}
+                    <div className="space-y-3">
+                        <p className="text-sm">Color: <span className="text-gray-500">{product.variants?.[0] || "Fuchsia Glow"}</span></p>
+                        <div className="flex flex-wrap gap-2">
+                            {colors.map((color, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setSelectedColor(color)}
+                                    className={`w-8 h-8 rounded-full border-2 transition-all ${selectedColor === color ? "border-gray-900 scale-110" : "border-transparent hover:scale-105"}`}
+                                    style={{ backgroundColor: color }}
+                                    aria-label={`Select color ${idx}`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Size Selection */}
+                    <div className="space-y-3">
+                        <div className="flex justify-between items-center bg-gray-50/50 p-1">
+                            <p className="text-xs font-bold uppercase tracking-widest">Size</p>
+                            {/* Size Guide Link Mock */}
+                            <button className="text-xs underline text-gray-500 hover:text-secondary">Size Guide</button>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                            {sizes.map((size) => (
+                                <button
+                                    key={size}
+                                    onClick={() => setSelectedSize(size)}
+                                    className={`px-6 py-2 border text-xs font-bold uppercase tracking-wider transition-all duration-200 ${selectedSize === size
+                                            ? "border-gray-900 bg-gray-50 text-black"
+                                            : "border-gray-200 text-gray-500 hover:border-gray-400"
+                                        }`}
+                                >
+                                    {size}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Quantity and Add to Cart */}
+                    <div className="flex gap-4">
+                        {/* Quantity Dropdown */}
+                        <div className="relative w-24">
+                            <select
+                                value={quantity}
+                                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                className="w-full h-full p-3 border border-gray-200 bg-white text-sm appearance-none focus:outline-hidden cursor-pointer"
+                            >
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+                                    <option key={n} value={n}>{n}</option>
+                                ))}
+                            </select>
+                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500" size={14} />
+                        </div>
+
                         <button
-                            onClick={() => setIsDeliveryOpen(!isDeliveryOpen)}
-                            className="flex items-center justify-between w-full py-2 text-left hover:text-accent transition-colors"
+                            onClick={handleAddToCart}
+                            disabled={isAdded}
+                            className={`flex-1 py-4 text-center text-xs font-bold uppercase tracking-widest text-white transition-all duration-300 ${isAdded
+                                ? "bg-[#2a412e]"
+                                : "bg-[#3A5A40] hover:bg-[#2a412e]"
+                                }`}
                         >
-                            <span className="font-serif text-lg">Delivery Information</span>
-                            {isDeliveryOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            {isAdded ? "Added to Cart" : "Add to Cart"}
                         </button>
-                        <div className={`overflow-hidden transition-all duration-300 ${isDeliveryOpen ? "max-h-40 mt-4 opacity-100" : "max-h-0 opacity-0"}`}>
-                            <div className="text-sm text-gray-500 space-y-2 bg-gray-50 p-4 rounded-sm">
-                                <p><span className="font-semibold text-secondary">Coppell & Valley Ranch:</span> Free local delivery.</p>
-                                <p><span className="font-semibold text-secondary">Texas Orders:</span> Pickup or delivery within 1 hour drive (fee applies).</p>
-                                <p className="text-xs text-gray-400 italic">We currently do not ship outside of Texas.</p>
+                    </div>
+
+                    {/* Description Tabs */}
+                    <div className="pt-8 space-y-6">
+                        <div className="border-b border-gray-200 flex gap-8">
+                            <button
+                                onClick={() => setActiveTab("description")}
+                                className={`pb-2 text-xs font-bold uppercase tracking-widest transition-colors ${activeTab === "description" ? "border-b-2 border-black text-black" : "text-gray-400 hover:text-gray-600"}`}
+                            >
+                                Description
+                            </button>
+                            <button
+                                onClick={() => setActiveTab("size")}
+                                className={`pb-2 text-xs font-bold uppercase tracking-widest transition-colors ${activeTab === "size" ? "border-b-2 border-black text-black" : "text-gray-400 hover:text-gray-600"}`}
+                            >
+                                Size & Fit
+                            </button>
+                        </div>
+
+                        <div className="min-h-[100px] text-sm text-gray-600 leading-relaxed">
+                            {activeTab === "description" ? (
+                                <p>{product.description || "Bold yet refined, this item is the vibrant pop of color your wardrobe needs. Crafted from our signature materials, it offers effortless styling with a luxurious feel."}</p>
+                            ) : (
+                                <div className="space-y-2">
+                                    <p>Standard: 70" x 27"</p>
+                                    <p>Double: 80" x 35"</p>
+                                    <p>Mini: 50" x 20"</p>
+                                    <p>Square: 40" x 40"</p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Extra Info Icons */}
+                        <div className="space-y-3 text-xs text-gray-500 font-medium">
+                            <div className="flex items-center gap-3">
+                                <Share2 size={16} />
+                                <span>Material: 100% Modal</span>
                             </div>
+                            <div className="flex items-center gap-3">
+                                <Info size={16} />
+                                <span>Transparency: Semi-transparent</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Heart size={16} />
+                                <span>Production: Ethical & Sustainable</span>
+                            </div>
+                        </div>
+
+                        {/* Chat Button (Mock) */}
+                        <div className="pt-4">
+                            <button className="flex items-center gap-2 bg-[#009A57] text-white px-4 py-2 rounded-full text-xs font-bold hover:bg-[#007a45] transition-colors ml-auto">
+                                <MessageCircle size={16} /> Chat with us
+                            </button>
                         </div>
                     </div>
                 </div>
