@@ -8,7 +8,7 @@ import { SlidersHorizontal, ChevronDown } from "lucide-react";
 
 export default function ShopPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen pt-24 text-center">Loading Shop...</div>}>
+        <Suspense fallback={<div className="min-h-screen pt-40 text-center">Loading Shop...</div>}>
             <ShopContent />
         </Suspense>
     );
@@ -56,107 +56,106 @@ function ShopContent() {
     }, [selectedCategories, selectedTypes, sortOrder]);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="flex flex-col md:flex-row gap-12">
-                {/* Sidebar Filters */}
-                <aside className={`md:w-64 space-y-8 ${isMobileFiltersOpen ? "block" : "hidden md:block"}`}>
-                    <div>
-                        <h3 className="font-serif text-lg font-medium mb-4">Categories</h3>
-                        <div className="space-y-2">
-                            {allCategories.map((cat) => (
-                                <label key={cat} className="flex items-center space-x-2 cursor-pointer group">
-                                    <div className={`w-4 h-4 border border-gray-300 rounded-xs flex items-center justify-center transition-colors ${selectedCategories.includes(cat) ? "bg-secondary border-secondary" : "group-hover:border-gray-400"}`}>
-                                        {selectedCategories.includes(cat) && <div className="w-2 h-2 bg-white rounded-full" />}
-                                    </div>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedCategories.includes(cat)}
-                                        onChange={() => toggleFilter(cat, selectedCategories, setSelectedCategories)}
-                                        className="hidden"
-                                    />
-                                    <span className={`text-sm ${selectedCategories.includes(cat) ? "text-secondary font-medium" : "text-gray-500"}`}>{cat}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
+        <div className="w-full">
+            {/* Header Section */}
+            <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 pt-44 pb-10">
+                <h1 className="font-sans text-4xl md:text-5xl font-medium uppercase tracking-wide transform scale-x-125 origin-left inline-block">Solid Wovens</h1>
+            </div>
 
-                    <div>
-                        <h3 className="font-serif text-lg font-medium mb-4">Product Type</h3>
-                        <div className="space-y-2">
-                            {allTypes.map((type) => (
-                                <label key={type} className="flex items-center space-x-2 cursor-pointer group">
-                                    <div className={`w-4 h-4 border border-gray-300 rounded-sm flex items-center justify-center transition-colors ${selectedTypes.includes(type) ? "bg-secondary border-secondary" : "group-hover:border-gray-400"}`}>
-                                        {selectedTypes.includes(type) && <div className="w-2 h-2 bg-white rounded-full" />}
-                                    </div>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedTypes.includes(type)}
-                                        onChange={() => toggleFilter(type, selectedTypes, setSelectedTypes)}
-                                        className="hidden"
-                                    />
-                                    <span className={`text-sm ${selectedTypes.includes(type) ? "text-secondary font-medium" : "text-gray-500"}`}>{type}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-                </aside>
+            {/* Filter & Sort Bar */}
+            <div className="border-t border-b border-gray-200 bg-gray-50/50 sticky top-0 z-30">
+                <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center h-12 text-xs font-bold uppercase tracking-widest text-secondary">
+                        {/* Filter Toggle */}
+                        <button
+                            className="flex items-center gap-2 hover:text-accent transition-colors border-r border-gray-200 h-full pr-6"
+                            onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
+                        >
+                            <SlidersHorizontal size={14} />
+                            {isMobileFiltersOpen ? "Hide Filters" : "Show Filters"}
+                        </button>
 
-                {/* Main Content */}
-                <div className="flex-1">
-                    {/* Toolbar */}
-                    <div className="flex justify-between items-center mb-8">
-                        <h1 className="font-serif text-3xl">Shop All</h1>
-
-                        <div className="flex items-center gap-4">
-                            {/* Mobile Filter Toggle */}
-                            <button
-                                className="md:hidden flex items-center gap-2 text-sm text-secondary"
-                                onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-                            >
-                                <SlidersHorizontal size={16} /> Filters
+                        <div className="relative group h-full flex items-center pl-6 border-l border-gray-200">
+                            <button className="flex items-center gap-2 hover:text-accent transition-colors">
+                                Sort by <ChevronDown size={14} />
                             </button>
-
-                            {/* Sort Dropdown */}
-                            <div className="relative group">
-                                <button className="flex items-center gap-2 text-sm text-secondary hover:text-accent">
-                                    Sort by <ChevronDown size={14} />
+                            <div className="absolute right-0 top-full w-48 bg-white border border-gray-100 shadow-lg hidden group-hover:block z-40">
+                                <button
+                                    className={`block w-full text-left px-4 py-3 hover:bg-gray-50 ${sortOrder === "asc" ? "text-accent" : ""}`}
+                                    onClick={() => setSortOrder("asc")}
+                                >
+                                    Price: Low to High
                                 </button>
-                                <div className="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-100 shadow-lg p-2 rounded-md hidden group-hover:block z-10">
-                                    <button
-                                        className={`block w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${sortOrder === "asc" ? "font-bold" : ""}`}
-                                        onClick={() => setSortOrder("asc")}
-                                    >
-                                        Price: Low to High
-                                    </button>
-                                    <button
-                                        className={`block w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${sortOrder === "desc" ? "font-bold" : ""}`}
-                                        onClick={() => setSortOrder("desc")}
-                                    >
-                                        Price: High to Low
-                                    </button>
-                                </div>
+                                <button
+                                    className={`block w-full text-left px-4 py-3 hover:bg-gray-50 ${sortOrder === "desc" ? "text-accent" : ""}`}
+                                    onClick={() => setSortOrder("desc")}
+                                >
+                                    Price: High to Low
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    {/* Product Grid */}
-                    {filteredProducts.length > 0 ? (
-                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
-                            {filteredProducts.map((product) => (
-                                <ProductCard key={product.id} product={product} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="py-24 text-center text-gray-500">
-                            <p>No products found matching your selection.</p>
-                            <button
-                                onClick={() => { setSelectedCategories([]); setSelectedTypes([]); }}
-                                className="mt-4 text-sm underline hover:text-secondary"
-                            >
-                                Clear all filters
-                            </button>
-                        </div>
-                    )}
+            <div className="flex min-h-screen">
+                {/* Sidebar (Desktop) */}
+                <aside
+                    className={`
+                        bg-[#F4F4F4] border-r border-gray-200 transition-all duration-300 overflow-hidden
+                        ${isMobileFiltersOpen ? "w-64 opacity-100 p-6" : "w-0 opacity-0 p-0 border-none"}
+                        hidden md:block
+                    `}
+                >
+                    <div className="space-y-6 w-52">
+                        {/* Mock Filter Sections */}
+                        {["Availability", "Price", "Color", "Size", "Product Type"].map((section) => (
+                            <div key={section} className="border-b border-gray-300 pb-4">
+                                <button className="flex justify-between items-center w-full text-sm font-medium uppercase tracking-wide text-secondary hover:text-accent">
+                                    {section} <ChevronDown size={14} />
+                                </button>
+                                {/* Active 'Product Type' or 'Color' content could go here */}
+                                {section === "Product Type" && (
+                                    <div className="mt-4 space-y-2">
+                                        {allTypes.map((type) => (
+                                            <label key={type} className="flex items-center cursor-pointer group hover:text-accent">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedTypes.includes(type)}
+                                                    onChange={() => toggleFilter(type, selectedTypes, setSelectedTypes)}
+                                                    className="mr-2"
+                                                />
+                                                <span className="text-sm text-gray-600">{type}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </aside>
+
+                {/* Main Grid Content */}
+                <div className="flex-1 transition-all duration-300">
+                    <div className={`max-w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12`}>
+                        {filteredProducts.length > 0 ? (
+                            <div className={`grid gap-x-8 gap-y-12 transition-all duration-300 ${isMobileFiltersOpen ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"}`}>
+                                {filteredProducts.map((product) => (
+                                    <ProductCard key={product.id} product={product} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="py-24 text-center text-gray-500">
+                                <p>No products found matching your selection.</p>
+                                <button
+                                    onClick={() => { setSelectedCategories([]); setSelectedTypes([]); }}
+                                    className="mt-4 text-sm underline hover:text-secondary"
+                                >
+                                    Clear all filters
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

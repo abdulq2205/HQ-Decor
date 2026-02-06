@@ -2,11 +2,27 @@
 
 import Link from "next/link";
 import { ArrowRight, ShoppingBag, FileText, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -39,17 +55,17 @@ export default function Home() {
 
         <div className="relative z-10 w-full px-5 md:px-7 pb-8">
           <ScrollReveal>
-            <div className="space-y-4">
-              <h1 className="text-white font-sans text-3xl md:text-4xl lg:text-5xl font-medium tracking-normal uppercase leading-[0.9] transform scale-x-125 origin-left w-fit">
+            <div>
+              <h1 className="text-white font-sans text-3xl md:text-4xl lg:text-5xl font-medium tracking-normal uppercase leading-[0.9] transform scale-x-125 origin-left w-fit mb-8">
                 The Ramadan Capsule
               </h1>
-              <p className="text-white/90 text-sm md:text-base font-medium pl-1">
+              <p className="text-white/90 text-sm md:text-base font-medium pl-1 mb-5">
                 Two Tones. One Seamless Tradition.
               </p>
-              <div className="pt-3 pl-1">
+              <div className="pl-1">
                 <Link
                   href="/shop"
-                  className="inline-block bg-white text-black px-17 py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-200 hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
+                  className="inline-block bg-white text-black px-17 py-3 text-xs font-normal uppercase tracking-widest hover:bg-gray-200 hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
                 >
                   Shop Now
                 </Link>
@@ -73,7 +89,7 @@ export default function Home() {
             {/* Left Arrow */}
             <button
               onClick={scrollLeft}
-              className="absolute left-0 top-[175px] md:top-[225px] -translate-y-1/2 z-50 p-3 bg-white border border-gray-200 text-black hover:bg-[#7CA982] hover:text-white hover:border-transparent transition-all opacity-0 group-hover:opacity-100 shadow-md ml-4"
+              className={`absolute left-0 top-[175px] md:top-[225px] -translate-y-1/2 z-50 p-3 bg-white border border-gray-200 text-black hover:bg-[#7CA982] hover:text-white hover:border-transparent transition-all shadow-md ml-4 ${!canScrollLeft ? "hidden" : "opacity-0 group-hover:opacity-100"}`}
               aria-label="Scroll left"
             >
               <ChevronLeft size={24} />
@@ -82,7 +98,7 @@ export default function Home() {
             {/* Right Arrow */}
             <button
               onClick={scrollRight}
-              className="absolute right-0 top-[175px] md:top-[225px] -translate-y-1/2 z-50 p-3 bg-white border border-gray-200 text-black hover:bg-[#7CA982] hover:text-white hover:border-transparent transition-all opacity-0 group-hover:opacity-100 shadow-md mr-4"
+              className={`absolute right-0 top-[175px] md:top-[225px] -translate-y-1/2 z-50 p-3 bg-white border border-gray-200 text-black hover:bg-[#7CA982] hover:text-white hover:border-transparent transition-all shadow-md mr-4 ${!canScrollRight ? "hidden" : "opacity-0 group-hover:opacity-100"}`}
               aria-label="Scroll right"
             >
               <ChevronRight size={24} />
@@ -91,6 +107,7 @@ export default function Home() {
             {/* Scrollable Area */}
             <div
               ref={scrollRef}
+              onScroll={checkScroll}
               className="flex overflow-x-auto space-x-6 pb-8 scrollbar-hide snap-x snap-mandatory"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
@@ -104,7 +121,7 @@ export default function Home() {
               ].map((cat) => (
                 <div key={cat.name} className="flex-none w-[350px] md:w-[450px] snap-start group/card cursor-pointer">
                   {/* Image Container with Hover Overlay */}
-                  <div className="relative aspect-square overflow-hidden mb-4 bg-white border border-[#4A3427]">
+                  <div className="relative aspect-square overflow-hidden bg-white border border-[#4A3427]">
                     <div className={`w-full h-full ${cat.image} transition-transform duration-700 group-hover/card:scale-105`} />
 
                     {/* Hover Add to Cart Bar */}
@@ -114,7 +131,7 @@ export default function Home() {
                   </div>
 
                   {/* Text Info */}
-                  <div className="text-center space-y-1">
+                  <div className="text-center space-y-1 border-x border-b border-[#3A5A40] p-4 bg-white">
                     <h3 className="text-sm font-bold uppercase tracking-wide">{cat.name}</h3>
                     <p className="text-xs text-gray-500">{cat.price}</p>
                   </div>
@@ -126,11 +143,11 @@ export default function Home() {
       </section>
 
       {/* Shop All Button */}
-      <div className="flex justify-center pb-24 -mt-12">
+      <div className="flex justify-center pb-24 -mt-20">
         <ScrollReveal delay={0.3}>
           <Link
             href="/shop"
-            className="inline-block bg-[#E0EEDF] border border-[#3A5A40] text-[#3A5A40] px-17 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#3A5A40] hover:text-white hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
+            className="inline-block bg-[#E0EEDF] border border-[#3A5A40] text-[#3A5A40] px-17 py-3 text-xs font-normal uppercase tracking-widest hover:bg-[#3A5A40] hover:text-white hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
           >
             Shop All
           </Link>

@@ -46,11 +46,12 @@ export function Navbar() {
     return (
         <nav
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+                pathname === "/shop" ? "absolute" : "fixed",
+                "top-0 left-0 right-0 z-50 transition-all duration-300",
                 shouldHide ? "-translate-y-full" : "translate-y-0",
                 isTransparent
                     ? "bg-transparent border-transparent text-white pt-7"
-                    : "bg-primary/95 backdrop-blur-md border-b border-gray-100 text-[#4A3427] pb-2"
+                    : `bg-primary/95 backdrop-blur-md border-b border-gray-100 text-[#4A3427] ${pathname === "/shop" ? "pb-8 pt-4" : "pb-2"}`
             )}
             onMouseLeave={() => setHoveredLink(null)}
         >
@@ -67,7 +68,7 @@ export function Navbar() {
                     </div>
 
                     {/* Logo */}
-                    <div className="flex-shrink-0 flex items-center justify-center md:justify-start w-full md:w-auto absolute left-0 right-0 md:relative pointer-events-none md:pointer-events-auto">
+                    <div className="flex-shrink-0 flex items-center justify-center md:justify-start w-full md:w-auto absolute left-0 right-0 md:relative pointer-events-none md:pointer-events-auto md:-ml-5">
                         <Link href="/" className="pointer-events-auto font-playfair-manual text-3xl md:text-4xl tracking-tight">
                             <span className="text-6xl md:text-7xl">HQ</span> decor
                         </Link>
@@ -81,7 +82,7 @@ export function Navbar() {
                                 href={link.href}
                                 onMouseEnter={() => setHoveredLink(link.name)}
                                 className={cn(
-                                    "text-sm font-medium uppercase tracking-[0.15em] transition-all duration-300 relative group py-1",
+                                    "text-sm font-normal uppercase tracking-[0.15em] transition-all duration-300 relative group py-1 inline-block transform scale-x-125",
                                     // Scale effect on hover
                                     "hover:scale-110 origin-center",
                                     isTransparent ? "text-white/90 hover:text-white" : "text-[#4A3427] hover:text-accent"
