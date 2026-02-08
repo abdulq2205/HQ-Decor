@@ -55,7 +55,7 @@ function ProductContent({ params }: { params: Promise<{ id: string }> }) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
                 {/* Left: Image Section */}
                 <div className="space-y-4">
-                    <div className="aspect-[4/5] bg-neutral-100 relative overflow-hidden group">
+                    <div className="aspect-square bg-neutral-100 relative overflow-hidden group">
                         <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-gray-400">
                             {/* Placeholder logic matching Home Page */}
                             <div className={`w-full h-full bg-neutral-200`} />
@@ -70,31 +70,20 @@ function ProductContent({ params }: { params: Promise<{ id: string }> }) {
                 </div>
 
                 {/* Right: Details Section */}
-                <div className="space-y-8 pt-4">
+                <div className="space-y-8 pt-20">
                     <div className="space-y-2">
-                        <h1 className="font-serif text-4xl text-secondary">{product.name}</h1>
+                        <h1 className="text-4xl text-secondary" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>{product.name}</h1>
 
-                        {/* Reviews Mock */}
-                        <div className="flex items-center gap-2">
-                            <div className="flex text-[#005740]">
-                                {[1, 2, 3, 4, 5].map((s) => (
-                                    <Star key={s} size={14} fill="currentColor" stroke="none" />
-                                ))}
-                            </div>
-                            <span className="text-xs text-gray-500">114 Reviews</span>
-                        </div>
+
                     </div>
 
                     <div className="space-y-1">
                         <p className="text-xl font-bold text-gray-900">${product.price}.00 USD</p>
-                        <p className="text-xs text-gray-500">Shipping calculated at checkout.</p>
+
                     </div>
 
                     {/* Stock Status */}
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
-                        <span className="text-sm text-gray-600">Item is in stock</span>
-                    </div>
+
 
                     {/* Color Selection (Mock Visually to match screenshot) */}
                     <div className="space-y-3">
@@ -126,8 +115,8 @@ function ProductContent({ params }: { params: Promise<{ id: string }> }) {
                                     key={size}
                                     onClick={() => setSelectedSize(size)}
                                     className={`px-6 py-2 border text-xs font-bold uppercase tracking-wider transition-all duration-200 ${selectedSize === size
-                                            ? "border-gray-900 bg-gray-50 text-black"
-                                            : "border-gray-200 text-gray-500 hover:border-gray-400"
+                                        ? "border-gray-900 bg-gray-50 text-black"
+                                        : "border-gray-200 text-gray-500 hover:border-gray-400"
                                         }`}
                                 >
                                     {size}
@@ -160,7 +149,7 @@ function ProductContent({ params }: { params: Promise<{ id: string }> }) {
                                 : "bg-[#3A5A40] hover:bg-[#2a412e]"
                                 }`}
                         >
-                            {isAdded ? "Added to Cart" : "Add to Cart"}
+                            {isAdded ? "Added to List" : "Add to List"}
                         </button>
                     </div>
 
@@ -194,28 +183,9 @@ function ProductContent({ params }: { params: Promise<{ id: string }> }) {
                             )}
                         </div>
 
-                        {/* Extra Info Icons */}
-                        <div className="space-y-3 text-xs text-gray-500 font-medium">
-                            <div className="flex items-center gap-3">
-                                <Share2 size={16} />
-                                <span>Material: 100% Modal</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <Info size={16} />
-                                <span>Transparency: Semi-transparent</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <Heart size={16} />
-                                <span>Production: Ethical & Sustainable</span>
-                            </div>
-                        </div>
 
-                        {/* Chat Button (Mock) */}
-                        <div className="pt-4">
-                            <button className="flex items-center gap-2 bg-[#009A57] text-white px-4 py-2 rounded-full text-xs font-bold hover:bg-[#007a45] transition-colors ml-auto">
-                                <MessageCircle size={16} /> Chat with us
-                            </button>
-                        </div>
+
+
                     </div>
                 </div>
             </div>

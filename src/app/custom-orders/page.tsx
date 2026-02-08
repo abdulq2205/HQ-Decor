@@ -9,7 +9,6 @@ export default function CustomOrdersPage() {
         name: "",
         email: "",
         instagram: "",
-        date: "",
         description: "",
     });
 
@@ -20,7 +19,7 @@ export default function CustomOrdersPage() {
         setTimeout(() => {
             alert("Request sent! We will contact you shortly.");
             setIsSubmitting(false);
-            setFormData({ name: "", email: "", instagram: "", date: "", description: "" });
+            setFormData({ name: "", email: "", instagram: "", description: "" });
         }, 1500);
     };
 
@@ -46,18 +45,6 @@ export default function CustomOrdersPage() {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-medium uppercase tracking-wider text-gray-500">Event Date</label>
-                        <input
-                            type="date"
-                            value={formData.date}
-                            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                            className="w-full p-3 border border-gray-200 focus:outline-hidden focus:border-secondary transition-colors text-gray-600"
-                        />
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
                         <label className="text-sm font-medium uppercase tracking-wider text-gray-500">Email</label>
                         <input
                             required
@@ -67,16 +54,17 @@ export default function CustomOrdersPage() {
                             className="w-full p-3 border border-gray-200 focus:outline-hidden focus:border-secondary transition-colors"
                         />
                     </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium uppercase tracking-wider text-gray-500">Instagram Handle</label>
-                        <input
-                            type="text"
-                            placeholder="@"
-                            value={formData.instagram}
-                            onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                            className="w-full p-3 border border-gray-200 focus:outline-hidden focus:border-secondary transition-colors"
-                        />
-                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-sm font-medium uppercase tracking-wider text-gray-500">Instagram Handle</label>
+                    <input
+                        type="text"
+                        placeholder="@"
+                        value={formData.instagram}
+                        onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
+                        className="w-full p-3 border border-gray-200 focus:outline-hidden focus:border-secondary transition-colors"
+                    />
                 </div>
 
                 <div className="space-y-2">

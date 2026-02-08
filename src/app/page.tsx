@@ -137,7 +137,7 @@ export default function Home() {
       </section>
 
       {/* Shop All Button */}
-      <div className="flex justify-center pb-24 -mt-20">
+      <div className="flex justify-center pb-8 -mt-20">
         <ScrollReveal delay={0.3}>
           <Link
             href="/shop"
@@ -150,34 +150,73 @@ export default function Home() {
 
       {/* Seasonal Banner */}
       {/* Process Strip */}
-      <section className="py-24 bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-            <ScrollReveal delay={0.1}>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="p-4 bg-gray-50 rounded-full text-secondary">
-                  <ShoppingBag size={32} strokeWidth={1} />
+      {/* Browse & Select Section */}
+      <section className="bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          {/* Text Content */}
+          <div className="flex items-center justify-center p-12 lg:p-24 order-2 lg:order-1">
+            <ScrollReveal>
+              <div className="max-w-lg space-y-12">
+                <div className="space-y-4">
+                  <h2 className="font-sans text-2xl md:text-4xl uppercase tracking-normal transform scale-x-125 origin-left w-fit">
+                    Ordering Process
+                  </h2>
                 </div>
-                <h3 className="font-serif text-xl">1. Browse & Select</h3>
-                <p className="text-gray-500 text-sm max-w-xs">Explore our handmade collection and add your favorite items to the request list.</p>
+
+                <div className="relative pl-8 ml-3">
+                  {/* Step 1 */}
+                  <div className="relative pb-12">
+                    {/* Connecting Line */}
+                    <div className="absolute left-0 top-6 bottom-0 w-px bg-gray-300 -translate-x-1/2"></div>
+                    {/* Marker */}
+                    <span className="absolute left-0 -translate-x-1/2 top-1.5 h-5 w-5 bg-neutral-800"></span>
+                    <div className="space-y-3 pl-12">
+                      <h3 className="font-serif text-2xl uppercase tracking-widest text-neutral-800">Browse & Select</h3>
+                      <p className="text-xs font-normal uppercase tracking-widest text-gray-600 max-w-sm">
+                        Explore our handmade collection and add your favorite items to the request list.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Step 2 */}
+                  <div className="relative pb-12">
+                    {/* Connecting Line */}
+                    <div className="absolute left-0 top-6 bottom-0 w-px bg-gray-300 -translate-x-1/2"></div>
+                    {/* Marker */}
+                    <span className="absolute left-0 -translate-x-1/2 top-1.5 h-5 w-5 bg-neutral-800"></span>
+                    <div className="space-y-3 pl-12">
+                      <h3 className="font-serif text-2xl uppercase tracking-widest text-neutral-800">Submit Request</h3>
+                      <p className="text-xs font-normal uppercase tracking-widest text-gray-600 max-w-sm">
+                        Review your list and submit an inquiry via Email or Instagram DM.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Step 3 */}
+                  <div className="relative">
+                    {/* Marker (No Line) */}
+                    <span className="absolute left-0 -translate-x-1/2 top-1.5 h-5 w-5 bg-neutral-800"></span>
+                    <div className="space-y-3 pl-12">
+                      <h3 className="font-serif text-2xl uppercase tracking-widest text-neutral-800">Confirm Details</h3>
+                      <p className="text-xs font-normal uppercase tracking-widest text-gray-600 max-w-sm">
+                        We will confirm availability, customization details, and payment options with you.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </ScrollReveal>
-            <ScrollReveal delay={0.3}>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="p-4 bg-gray-50 rounded-full text-secondary">
-                  <FileText size={32} strokeWidth={1} />
-                </div>
-                <h3 className="font-serif text-xl">2. Submit Request</h3>
-                <p className="text-gray-500 text-sm max-w-xs">Review your list and submit an inquiry via Email or Instagram DM.</p>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal delay={0.5}>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="p-4 bg-gray-50 rounded-full text-secondary">
-                  <CheckCircle size={32} strokeWidth={1} />
-                </div>
-                <h3 className="font-serif text-xl">3. Confirm Details</h3>
-                <p className="text-gray-500 text-sm max-w-xs">We will confirm availability, customization details, and payment options with you.</p>
+          </div>
+
+          {/* Image */}
+          <div className="relative w-full aspect-square order-1 lg:order-2">
+            <ScrollReveal delay={0.2} className="h-full w-full">
+              <div className="absolute inset-0 h-full w-full">
+                <img
+                  src="/images/browse-select.jpg"
+                  alt="Browse and Select"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </ScrollReveal>
           </div>
@@ -185,20 +224,7 @@ export default function Home() {
       </section>
 
       {/* Process Strip */}
-      {/* Seasonal Banner */}
-      <section className="bg-accent py-16 text-center text-white px-4">
-        <div className="max-w-4xl mx-auto space-y-4">
-          <ScrollReveal>
-            <p className="uppercase tracking-widest text-sm opacity-90">New Arrivals</p>
-            <h2 className="font-serif text-4xl md:text-5xl">Ramadan Collection Now Available</h2>
-            <div className="pt-6">
-              <Link href="/shop" className="inline-block border-b border-white pb-1 hover:opacity-80 transition-opacity">
-                Shop Now
-              </Link>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+
 
     </div>
   );

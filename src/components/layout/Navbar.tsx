@@ -13,6 +13,7 @@ export function Navbar() {
     const { cartCount, setIsCartOpen } = useCart();
     const pathname = usePathname();
     const isHome = pathname === "/";
+    const isProductPage = pathname?.startsWith("/product");
     const [isScrolled, setIsScrolled] = useState(false);
     const [isPastHero, setIsPastHero] = useState(false);
 
@@ -43,16 +44,21 @@ export function Navbar() {
     const isTransparent = isHome && !isScrolled;
     const shouldHide = isHome && isPastHero;
 
+    const navClassName = isProductPage
+        ? "fixed top-0 left-0 right-0 z-[100] bg-primary/95 backdrop-blur-md border-b border-gray-100 text-[#4A3427] pb-2 transition-none"
+        : cn(
+            (pathname === "/shop") ? "absolute" : "fixed",
+            "top-0 left-0 right-0 z-[100] transition-all duration-300",
+            shouldHide ? "-translate-y-full" : "translate-y-0",
+            isTransparent
+                ? "bg-transparent border-transparent text-white pt-7"
+                : `bg-primary/95 backdrop-blur-md border-b border-gray-100 text-[#4A3427] ${pathname === "/shop" ? "pb-8 pt-4" : "pb-2"}`
+        );
+
     return (
         <nav
-            className={cn(
-                pathname === "/shop" ? "absolute" : "fixed",
-                "top-0 left-0 right-0 z-50 transition-all duration-300",
-                shouldHide ? "-translate-y-full" : "translate-y-0",
-                isTransparent
-                    ? "bg-transparent border-transparent text-white pt-7"
-                    : `bg-primary/95 backdrop-blur-md border-b border-gray-100 text-[#4A3427] ${pathname === "/shop" ? "pb-8 pt-4" : "pb-2"}`
-            )}
+            style={isProductPage ? { position: 'fixed', top: 0, width: '100%', zIndex: 100 } : undefined}
+            className={navClassName}
             onMouseLeave={() => setHoveredLink(null)}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
